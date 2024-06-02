@@ -1,0 +1,181 @@
+/* styles.css */
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background-color: #f4f7f6;
+}
+
+header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dfe3e8;
+    padding: 1em 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1em;
+}
+
+header h1 {
+    margin-bottom: 0 !important;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-top: 0;
+    color: #095280;
+}
+
+header nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 1em;
+}
+
+header nav ul li {
+    margin: 0;
+    position: relative;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #3498db;
+    font-weight: bold;
+    font-size: 1.7rem;
+    position: relative;
+    padding: 0.5em 1em;
+    transition: color 0.3s ease, border-bottom 0.6s ease;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 0.4em;
+}
+
+header nav ul li a.active,
+header nav ul li a:hover {
+    background: linear-gradient(to right, #f1c40f 0%, #f1c40f 100%);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 0.4em;
+    text-decoration: none;    
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1em;
+}
+
+main {
+    padding-top: 6em;
+}
+
+.section {
+    background-color: #ffffff;
+    padding: 3em 2em;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section + .section {
+    margin-top: -1em; /* Adjust as needed to remove gap */
+}
+
+h2 {
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+    color: #3498db;
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(to right, #f1c40f 0%, #f1c40f 100%);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 100% 0.2em;
+    transition: background-size 0.4s ease-in-out;
+}
+
+h2:hover {
+    background-size: 100% 100%;
+    cursor: pointer;
+}
+
+p {
+    font-size: 1.2em;
+    color: #666;
+}
+
+.code-samples {
+    display: flex;
+    gap: 2em;
+    margin-bottom: 2em;
+}
+
+.code-sample {
+    background-color: #f9f9f9;
+    padding: 2em;
+    border-radius: 8px;
+    flex: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+code {
+    display: block;
+    background-color: #f4f7f6;
+    padding: 1em;
+    border-radius: 5px;
+    font-family: 'Courier New', Courier, monospace;
+    color: #e74c3c;
+}
+
+footer {
+    background-color: #ffffff;
+    padding: 1em 0;
+    border-top: 1px solid #dfe3e8;
+    text-align: center;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+footer .container {
+    padding: 0 1em;
+}
+
+footer p {
+    margin: 0;
+    color: #666;
+}
+
+.why-list {
+    list-style-type: none; /* Remove default bullets */
+    padding: 0;
+}
+
+.why-list li {
+    padding: 10px 0; /* Add some vertical padding to each list item */
+    position: relative; /* Needed to position the icon */
+    padding-left: 30px; /* Add left padding for icon */
+    font-size: 1.1em; /* Increase font size for better readability */
+}
+
+.why-list li::before {
+    content: "\f058"; /* Font Awesome check-circle icon */
+    font-family: "Font Awesome 5 Free"; /* Font Awesome font family */
+    font-weight: 900; /* Needed to make the icon solid */
+    color: #3498db; /* Icon color */
+    position: absolute; /* Position the icon absolutely */
+    left: 0; /* Move the icon to the left of the list item text */
+    top: 50%; /* Center the icon vertically */
+    transform: translateY(-50%); /* Translate to adjust vertical position */
+    font-size: 1.5em; /* Increase icon size */
+}

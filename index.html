@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IpSimple - A Simple Public IP Address API</title>
+    <meta name="description" content="IpSimple API is a straightforward public IP address API, designed for quick integration into any application.">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<header class="bg-light py-3 shadow-sm">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h1 class="mb-0"><span class="position-relative">IpSimple</span></h1>
+        <nav>
+            <ul class="nav">
+                <li class="nav-item"><a href="#about" class="nav-link active">About</a></li>
+                <li class="nav-item"><a href="#api-usage" class="nav-link">API Usage</a></li>
+                <li class="nav-item"><a href="#code-samples" class="nav-link">Code Samples</a></li>
+                <li class="nav-item"><a href="#libraries" class="nav-link">Libraries</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main class="container mt-5 pt-5">
+    <section id="about" class="section mb-5">
+        <h2>About</h2>
+        <p>A Simple Public IP Address API</p>
+        <p>Want to get started right away? Don't wait, run one of the code samples below in your terminal and check it out!</p>
+
+        <div class="row g-3 code-samples">
+            <div class="col-md-6 code-sample">
+                <h3>IPv4</h3>
+                <pre><code class="language-bash">$ curl 'https://api.ipsimple.org?format=json'</code></pre>
+            </div>
+            <div class="col-md-6 code-sample">
+                <h3>IPv6</h3>
+                <pre><code class="language-bash">$ curl 'https://api6.ipsimple.org?format=json'</code></pre>
+            </div>
+        </div>
+
+        <p>If you need to get the geolocation data by IP, please refer to our <a href="#">IP Geolocation API</a></p>
+    </section>
+
+    <section id="why-ipsimple" class="section mb-5">
+        <h2>Why IpSimple?</h2>
+        <p>Ever needed to get your public IP address programmatically? Maybe you're provisioning new cloud servers and need to know your IP -- maybe you're behind a corporate firewall and need to tunnel information -- whatever the reason: sometimes having a public IP address API is useful!</p>
+        
+        <p>You should use IpSimple because:</p>
+        <ul class="why-list list-unstyled">
+            <li><i class=""></i> Unlimited usage: No restrictions on the number of requests, even if you're making millions per minute.</li>
+            <li><i class=""></i> Seamless compatibility: Supports both IPv4 and IPv6 addresses, ensuring compatibility with all technologies.</li>
+            <li><i class=""></i> High availability: Hosted on Azure with a multi-zone and multi-region setup, guaranteeing reliability and uptime.</li>
+            <li><i class=""></i> Open source: Completely open source, fostering transparency and community contributions.</li>
+            <li><i class=""></i> Privacy-focused: No visitor information is ever logged, ensuring complete privacy.</li>
+            <li><i class=""></i> Future-proof: Built to last, with a commitment to maintaining the service indefinitely.</li>
+        </ul>
+    </section>
+
+    <section id="api-usage" class="section mb-5">
+        <h2>API Usage</h2>
+        <p>Using IpSimple is straightforward. You have three options. You can get your public IP directly (in plain text), you can get your public IP in JSON format, or you can get your public IP information in JSONP format (useful for JavaScript developers).</p>
+
+        <h3>IPv4</h3>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>API URL</th>
+                        <th>Response Type</th>
+                        <th>Sample Output (IPv4)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>https://api.ipsimple.org</code></td>
+                        <td>text</td>
+                        <td><code>98.207.254.136</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>https://api.ipsimple.org?format=json</code></td>
+                        <td>json</td>
+                        <td><code>{"ip":"98.207.254.136"}</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>https://api.ipsimple.org?format=jsonp</code></td>
+                        <td>jsonp</td>
+                        <td><code>callback({"ip":"98.207.254.136"});</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>https://api.ipsimple.org?format=jsonp&callback=getip</code></td>
+                        <td>jsonp</td>
+                        <td><code>getip({"ip":"98.207.254.136"});</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>IPv6</h3>
+        <p>The api6.ipsimple.org is used for IPv6 requests only. If you don't have an IPv6 address, the request will fail.</p>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>API URL</th>
+                        <th>Response Type</th>
+                        <th>Sample Output (IPv6)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>https://api6.ipsimple.org</code></td>
+                        <td>text</td>
+                        <td><code>2a00:1450:400f:80d::200e</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>https://api6.ipsimple.org?format=json</code></td>
+                        <td>json</td>
+                        <td><code>{"ip":"2a00:1450:400f:80d::200e"}</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>https://api6.ipsimple.org?format=jsonp</code></td>
+                        <td>jsonp</td>
+                        <td><code>callback({"ip":"2a00:1450:400f:80d::200e"});</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>https://api6.ipsimple.org?format=jsonp&callback=getip</code></td>
+                        <td>jsonp</td>
+                        <td><code>getip({"ip":"2a00:1450:400f:80d::200e"});</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="code-samples" class="section mb-5">
+        <h2>Code Samples</h2>
+        <p>This section contains some common usage patterns from a variety of programming languages. Want something included that isn't listed here? feel free to do a PR to this repo!</p>
+
+        <h3>Bash</h3>
+        <pre><code class="language-bash">#!/bin/bash
+
+ip=$(curl -s https://api.ipsimple.org)
+echo "My public IP address is: $ip"</code></pre>
+
+        <h3>Python</h3>
+        <pre><code class="language-python">from requests import get
+
+ip = get('https://api.ipsimple.org').text
+print('My public IP address is: {}'.format(ip))</code></pre>
+
+        <h3>JavaScript</h3>
+        <pre><code class="language-javascript">fetch('https://api.ipsimple.org')
+    .then(response => response.text())
+    .then(ip => console.log('My public IP address is:', ip));</code></pre>
+    </section>
+
+    <section id="libraries" class="section mb-5">
+        <h2>Libraries</h2>
+        <p>If you want to use IpSimple in your favorite programming language, but want to keep your code nice and tidy, feel free to use one of our libraries below! They'll make your life a little bit easier and more enjoyable =)</p>
+
+        <p>NOTE: Don't see a library for your favorite programming language? If you create one, I'll be happy to link to it below! Just <a href="mailto:service.desk@ipsimple.org">shoot us</a> an email with the details and I'll gladly link to it!</p>
+
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Library URL</th>
+                        <th>Language</th>
+                        <th>Author</th>
+                        <th>Official?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><a href="#">https://github.com/ipsimple/go-ipsimple</a></td>
+                        <td>Go</td>
+                        <td>IpSimple</td>
+                        <td>TODO</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">https://github.com/ipsimple/python-ipsimple</a></td>
+                        <td>Python</td>
+                        <td>IpSimple</td>
+                        <td>TODO</td>
+                    </tr>
+                    <tr>
+                        <td><a href="#">https://github.com/ipsimple/js-ipsimple</a></td>
+                        <td>JavaScript</td>
+                        <td>IpSimple</td>
+                        <td>TODO</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer class="bg-light py-3">
+    <div class="container text-center">
+        <p id="copyright">IpSimple © </p>
+    </div>
+</footer>
+
+<script>
+    document.getElementById('copyright').innerHTML += new Date().getFullYear();
+</script>
+
+</body>
+
+</html>
