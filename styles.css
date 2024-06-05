@@ -179,3 +179,22 @@ footer p {
     transform: translateY(-50%); /* Translate to adjust vertical position */
     font-size: 1.5em; /* Increase icon size */
 }
+
+.banner {
+    background-color: #ffcc00;
+    color: #e4dbdb;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 16px;
+    font-weight: bold;    
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.banner .icon {
+    background-color: #ffffff;
+    padding: 0 5px;
+    border-radius: 5px;
+}
