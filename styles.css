@@ -1,16 +1,31 @@
 /* styles.css */
 
+:root {
+    --primary-color: #2c3e50;
+    --accent-color: #e67e22;
+    --bg-color: #f4f7f6;
+    --text-color: #333;
+    --light-gray: #dfe3e8;
+}
+
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
-    color: #333;
-    background-color: #f4f7f6;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2em;
 }
 
 header {
     background-color: #ffffff;
-    border-bottom: 1px solid #dfe3e8;
+    border-bottom: 1px solid #e0e0e0;
     padding: 1em 0;
     position: fixed;
     width: 100%;
@@ -23,18 +38,17 @@ header .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1em;
 }
 
 header h1 {
-    margin-bottom: 0 !important;
+    margin: 0;
     font-size: 2.5rem;
     font-weight: 700;
-    line-height: 1.25;
-    margin-top: 0;
-    color: #095280;
+}
+
+header h1 a {
+    color: #2c3e50;
+    text-decoration: none;
 }
 
 header nav ul {
@@ -45,75 +59,107 @@ header nav ul {
     gap: 1em;
 }
 
-header nav ul li {
-    margin: 0;
-    position: relative;
-}
-
 header nav ul li a {
     text-decoration: none;
-    color: #3498db;
-    font-weight: bold;
-    font-size: 1.7rem;
-    position: relative;
+    color: #2c3e50;
+    font-weight: 500;
+    font-size: 1.1rem;
     padding: 0.5em 1em;
-    transition: color 0.3s ease, border-bottom 0.6s ease;
-    background-position: 0 100%;
-    background-repeat: no-repeat;
-    background-size: 100% 0.4em;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    border-radius: 5px;
 }
 
-header nav ul li a.active,
-header nav ul li a:hover {
-    background: linear-gradient(to right, #f1c40f 0%, #f1c40f 100%);
-    background-position: 0 100%;
-    background-repeat: no-repeat;
-    background-size: 100% 0.4em;
-    text-decoration: none;    
+header nav ul li a:hover,
+header nav ul li a.active {
+    background-color: #e67e22;
+    color: #ffffff;
 }
 
-.container {
-    max-width: 1200px;
+/* Add orange line */
+.hero h2 {
+    position: relative;
+    display: inline-block;
+}
+
+/* Ensure h2 text stays on one line on larger screens */
+@media (min-width: 992px) {
+    h2 {
+        white-space: nowrap;
+    }
+}
+
+/* Add orange line */
+.hero h2 {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+.hero h2::after {
+    content: '';
+    width: 100%;
+    height: 4px;
+    background-color: #e67e22;
+    margin-top: 20px;
+}
+
+/* Center the paragraph text under the h2 */
+.hero p.lead {
+    text-align: center;
     margin: 0 auto;
-    padding: 1em;
+}
+
+.hero {
+    background-color: #34495e;
+    color: #ffffff;
+    padding: 5em 0 2em; /* Reduced padding to make it slimmer */
+    text-align: center;
+    border-bottom: 3px solid #e67e22;
+}
+
+.hero h2 {
+    font-size: 2.2em; /* Slightly reduced font size */
+    margin-bottom: 0.3em;
+    color: #ffffff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.hero p {
+    font-size: 1.1em; /* Slightly reduced font size */
+    max-width: 600px;
+    margin: 0 auto;
+    color: #ecf0f1;
+}
+
+/* Add this new rule for the first content section */
+.content-section:first-of-type {
+    margin-top: 2em; /* Adds space between hero and first content section */
 }
 
 main {
-    padding-top: 6em;
+    padding-top: 5em;
 }
 
-.section {
+
+.card {
     background-color: #ffffff;
-    padding: 3em 2em;
+    padding: 2em;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2em;
+    transition: transform 0.3s ease;
 }
 
-.section + .section {
-    margin-top: -1em; /* Adjust as needed to remove gap */
+.card:hover {
+    transform: translateY(-5px);
 }
 
 h2 {
-    font-size: 2.5em;
-    margin-bottom: 0.5em;
-    color: #3498db;
-    position: relative;
-    display: inline-block;
-    background: linear-gradient(to right, #f1c40f 0%, #f1c40f 100%);
-    background-position: 0 100%;
-    background-repeat: no-repeat;
-    background-size: 100% 0.2em;
-    transition: background-size 0.4s ease-in-out;
-}
-
-h2:hover {
-    background-size: 100% 100%;
-    cursor: pointer;
-}
-
-p {
-    font-size: 1.2em;
-    color: #666;
+    font-size: 2em;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5em;
+    margin-bottom: 1em;
 }
 
 .code-samples {
@@ -124,10 +170,9 @@ p {
 
 .code-sample {
     background-color: #f9f9f9;
-    padding: 2em;
+    padding: 1.5em;
     border-radius: 8px;
     flex: 1;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 code {
@@ -136,65 +181,109 @@ code {
     padding: 1em;
     border-radius: 5px;
     font-family: 'Courier New', Courier, monospace;
-    color: #e74c3c;
+    color: var(--accent-color);
 }
 
-footer {
-    background-color: #ffffff;
-    padding: 1em 0;
-    border-top: 1px solid #dfe3e8;
-    text-align: center;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+pre {
+    white-space: pre-wrap; /* Allows the code to wrap */
+    word-break: break-all; /* Prevents long words from making the container overflow */
 }
 
-footer .container {
-    padding: 0 1em;
+.code-sample {
+    overflow-x: auto; /* Ensures any overflow is handled with a scrollbar */
 }
 
-footer p {
-    margin: 0;
-    color: #666;
-}
 
 .why-list {
-    list-style-type: none; /* Remove default bullets */
+    list-style-type: none;
     padding: 0;
 }
 
 .why-list li {
-    padding: 10px 0; /* Add some vertical padding to each list item */
-    position: relative; /* Needed to position the icon */
-    padding-left: 30px; /* Add left padding for icon */
-    font-size: 1.1em; /* Increase font size for better readability */
+    padding: 10px 0;
+    position: relative;
+    padding-left: 30px;
+    font-size: 1.1em;
 }
 
-.why-list li::before {
-    content: "\f058"; /* Font Awesome check-circle icon */
-    font-family: "Font Awesome 5 Free"; /* Font Awesome font family */
-    font-weight: 900; /* Needed to make the icon solid */
-    color: #3498db; /* Icon color */
-    position: absolute; /* Position the icon absolutely */
-    left: 0; /* Move the icon to the left of the list item text */
-    top: 50%; /* Center the icon vertically */
-    transform: translateY(-50%); /* Translate to adjust vertical position */
-    font-size: 1.5em; /* Increase icon size */
+.why-list li i {
+    color: var(--accent-color);
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .banner {
-    background-color: #ffcc00;
-    color: #e4dbdb;
+    background-color: #ffeeba;
+    color: #856404;
     text-align: center;
     padding: 10px 0;
     font-size: 16px;
-    font-weight: bold;    
-    width: 100%;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    margin-bottom: 2em;
+    border-radius: 5px;
 }
 
-.banner .icon {
-    background-color: #ffffff;
-    padding: 0 5px;
-    border-radius: 5px;
+footer {
+    background-color: var(--primary-color);
+    color: #ffffff;
+    padding: 2em 0;
+    text-align: center;
+}
+
+footer .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.social-links {
+    display: flex;
+    gap: 1em;
+}
+
+.social-icon {
+    color: #ffffff;
+    font-size: 1.5em;
+    transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+    color: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+    header .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    header nav {
+        margin-top: 1em;
+    }
+
+    header nav ul {
+        flex-direction: column;
+    }
+
+    .code-samples {
+        flex-direction: column;
+    }
+
+    footer .container {
+        flex-direction: column;
+    }
+
+    .social-links {
+        margin-top: 1em;
+    }
+}
+
+.brand-name {
+    font-size: larger;
+}
+
+.copyrigt-text {
+    font-size: smaller;
 }
