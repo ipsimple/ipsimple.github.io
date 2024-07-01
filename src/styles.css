@@ -182,8 +182,7 @@ code {
     border-radius: 5px;
     font-family: 'Courier New', Courier, monospace;
     color: var(--accent-color) !important;
-    font-weight: bold;
-    font-size: .9em !important;
+    font-weight: bold;    
 }
 
 pre {
