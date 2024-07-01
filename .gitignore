@@ -14,7 +14,6 @@ jspm_packages/
 
 # Build directories
 dist/
-build/
 
 # Runtime data
 pids/
