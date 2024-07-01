@@ -94,13 +94,13 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const { owner, repo } = context.repo;
-            const issue_number = context.payload.pull_request ? context.payload.pull_request.number : context.payload.number;
-            const newTag = process.env.NEW_TAG;
-            const comment = {
-              owner,
-              repo,
-              issue_number,
-              body: `Deployment successful with release ${newTag}!`
-            };
-            await github.issues.createComment(comment);
+              const { owner, repo } = context.repo;
+              const commit_sha = context.sha;
+              const newTag = process.env.NEW_TAG;
+              const comment = {
+                owner,
+                repo,
+                commit_sha,
+                body: `Deployment successful with release ${newTag}!`
+              };
+              await github.repos.createCommitComment(comment);
