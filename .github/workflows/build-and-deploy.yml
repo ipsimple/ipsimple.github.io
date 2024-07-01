@@ -24,6 +24,9 @@ jobs:
     #   - name: Run Linter
     #     run: npm run lint
 
+      - name: List build directory contents
+        run: ls -la build
+
       - name: Build project
         run: npm run build
       
