@@ -25,7 +25,7 @@ async function minifyHTML() {
     let html = fs.readFileSync('src/index.html', 'utf8');
 
     // Replace the version placeholder with the actual version number
-    html = html.replace('VERSION_PLACEHOLDER', version);
+    html = html.replace(/VERSION_PLACEHOLDER/g, version);
 
     const minifiedHTML = await minify(html, {
         collapseWhitespace: true,

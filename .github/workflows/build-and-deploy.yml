@@ -21,40 +21,42 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Fetch and tag the release
-        id: tag_release
+      - name: Run Linter
+        run: npm run lint
+
+      - name: Tag the release
+        id: tag_version
+        if: github.ref == 'refs/heads/dev'
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-
+          
           # Fetch tags from the remote repository
-          git fetch --tags || { echo "Failed to fetch tags"; exit 1; }
-
+          git fetch --tags
+          
           # Get the latest tag
-          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1` 2>/dev/null || echo "")
-
+          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1`)
+          
           # If no tags are found, start from 1.0.0
           if [ -z "$LATEST_TAG" ]; then
-            echo "No tags found. Starting from 1.0.0"
             NEW_TAG="1.0.0"
           else
-            echo "Latest tag found: $LATEST_TAG"
             # Parse the latest version
             VERSION_REGEX="^([0-9]+)\.([0-9]+)\.([0-9]+)$"
             if [[ $LATEST_TAG =~ $VERSION_REGEX ]]; then
               MAJOR="${BASH_REMATCH[1]}"
               MINOR="${BASH_REMATCH[2]}"
               PATCH="${BASH_REMATCH[3]}"
-
+              
               # Increment the minor version
               MINOR=$((MINOR + 1))
-
+              
               # Reset minor and increment major if minor reaches 100
               if [ $MINOR -eq 100 ]; then
                 MINOR=0
                 MAJOR=$((MAJOR + 1))
               fi
-
+              
               # Form the new version tag
               NEW_TAG="$MAJOR.$MINOR.$PATCH"
             else
@@ -62,28 +64,23 @@ jobs:
               exit 1
             fi
           fi
-
-          echo "Creating new tag: $NEW_TAG"
+          
           # Create and push the new tag
-          git tag $NEW_TAG || { echo "Failed to create tag $NEW_TAG"; exit 1; }
-          git push origin $NEW_TAG || { echo "Failed to push tag $NEW_TAG"; exit 1; }
-
-          # Set the new tag as an output variable
-          echo "::set-output name=new_tag::$NEW_TAG"
-
-      - name: Set version as environment variable
-        run: echo "NEW_TAG=${{ steps.tag_release.outputs.new_tag }}" >> $GITHUB_ENV
-
-      - name: Run Linter
-        run: npm run lint
+          git tag $NEW_TAG
+          git push origin $NEW_TAG
+          
+          # Set the new tag as an environment variable
+          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
 
       - name: Build project
-        env:
-          NEW_TAG: ${{ steps.tag_release.outputs.new_tag }}
         run: npm run build
+        env:
+          NEW_TAG: ${{ env.NEW_TAG }}
 
       - name: Run Tests
         run: npm test
+        env:
+          NEW_TAG: ${{ env.NEW_TAG }}
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
@@ -98,12 +95,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const { owner, repo } = context.repo;
-            const commit_sha = context.sha;
+            const issue_number = context.payload.pull_request ? context.payload.pull_request.number : context.payload.number;
             const newTag = process.env.NEW_TAG;
             const comment = {
               owner,
               repo,
-              commit_sha,
+              issue_number,
               body: `Deployment successful with release ${newTag}!`
             };
-            await github.repos.createCommitComment(comment);
+            await github.issues.createComment(comment);
