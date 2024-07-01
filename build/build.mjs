@@ -1,7 +1,7 @@
-import fs from 'fs-extra';
-import path from 'path';
+import fs from 'fs';
+import { PurgeCSS } from 'purgecss';
+import postcss from 'postcss';
 import cssnano from 'cssnano';
-import PurgeCSS from 'purgecss';
 import { minify } from 'html-minifier-terser';
 import imagemin from 'imagemin';
 import imageminMozjpeg from 'imagemin-mozjpeg';
@@ -10,63 +10,58 @@ import imageminPngquant from 'imagemin-pngquant';
 // Get the version number from environment variable set by the CI/CD pipeline
 const version = process.env.NEW_TAG || '1.0.0';
 
-const srcHtmlPath = path.join(__dirname, '../src/index.html');
-const distHtmlPath = path.join(__dirname, '../dist/index.html');
-const srcCssPath = path.join(__dirname, '../src/styles.css');
-const distCssPath = path.join(__dirname, '../dist/styles.min.css');
-const srcImagePath = path.join(__dirname, '../src/logo.jpeg');
-const distImagePath = path.join(__dirname, '../dist/logo.jpeg');
-const srcCnamePath = path.join(__dirname, '../src/CNAME');
-const distCnamePath = path.join(__dirname, '../dist/CNAME');
-
 async function buildCSS() {
     const purgeCSSResult = await new PurgeCSS().purge({
-        content: [srcHtmlPath],
-        css: [srcCssPath]
+        content: ['src/index.html'],
+        css: ['src/styles.css'],
     });
 
-    const minifiedCSS = await cssnano.process(purgeCSSResult[0].css, { from: undefined });
-    await fs.outputFile(distCssPath, minifiedCSS.css);
+    const result = await postcss([cssnano]).process(purgeCSSResult[0].css, { from: undefined });
+
+    fs.writeFileSync('dist/styles.min.css', result.css);
 }
 
-async function buildHTML() {
-    let htmlContent = await fs.readFile(srcHtmlPath, 'utf8');
+async function minifyHTML() {
+    let html = fs.readFileSync('src/index.html', 'utf8');
 
     // Replace the version placeholder with the actual version number
-    htmlContent = htmlContent.replace('VERSION_PLACEHOLDER', version);
+    html = html.replace('VERSION_PLACEHOLDER', version);
 
-    const minifiedHTML = await minify(htmlContent, {
+    const minifiedHTML = await minify(html, {
         collapseWhitespace: true,
         removeComments: true,
         minifyCSS: true,
-        minifyJS: true
+        minifyJS: true,
     });
 
-    await fs.outputFile(distHtmlPath, minifiedHTML);
+    fs.writeFileSync('dist/index.html', minifiedHTML);
 }
 
 async function compressImages() {
-    await imagemin([srcImagePath], {
-        destination: path.dirname(distImagePath),
+    await imagemin(['src/logo.jpeg'], {
+        destination: 'dist/',
         plugins: [
-            imageminMozjpeg(),
-            imageminPngquant()
+            imageminMozjpeg({ quality: 75 }),
+            imageminPngquant({ quality: [0.6, 0.8] })
         ]
     });
 }
 
-async function copyCNAME() {
-    await fs.copy(srcCnamePath, distCnamePath);
+function copyCNAME() {
+    fs.copyFileSync('src/CNAME', 'dist/CNAME');
 }
 
 async function build() {
+    // Ensure the dist directory exists
+    if (!fs.existsSync('dist')) {
+        fs.mkdirSync('dist');
+    }
+
     await buildCSS();
-    await buildHTML();
+    await minifyHTML();
     await compressImages();
-    await copyCNAME();
+    copyCNAME();
+    console.log('Build completed successfully');
 }
 
-build().catch(err => {
-    console.error(err);
-    process.exit(1);
-});
+build();
