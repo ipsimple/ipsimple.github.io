@@ -185,6 +185,10 @@ code {
     font-weight: bold;    
 }
 
+.large-font{
+    font-size: 2.5em !important;
+}
+
 pre {
     white-space: pre-wrap; /* Allows the code to wrap */
     word-break: break-all; /* Prevents long words from making the container overflow */

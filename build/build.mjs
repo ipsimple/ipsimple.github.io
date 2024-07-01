@@ -38,14 +38,24 @@ async function minifyHTML() {
 }
 
 async function compressImages() {
-    await imagemin(['src/logo.jpeg'], {
+    const imageFiles = [
+        'src/logo.jpeg',
+        'src/logo.png',
+        'src/logo.ico'
+    ];
+
+    await imagemin(imageFiles, {
         destination: 'dist/',
         plugins: [
             imageminMozjpeg({ quality: 75 }),
             imageminPngquant({ quality: [0.6, 0.8] })
         ]
     });
+
+    // Directly copy ICO files as imagemin doesn't handle ICO files
+    fs.copyFileSync('src/logo.ico', 'dist/logo.ico');
 }
+
 
 function copyCNAME() {
     fs.copyFileSync('src/CNAME', 'dist/CNAME');

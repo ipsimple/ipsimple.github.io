@@ -156,4 +156,20 @@ describe('Build Process', () => {
       throw error;
     }
   });
+
+  test('HTML includes favicon', () => {
+    const distHtml = fs.readFileSync(distHtmlPath, 'utf8');
+
+    // Check that the favicon is correctly included in the HTML
+    try {
+      expect(distHtml).toContain('<link rel="icon" href="logo.ico" type="image/x-icon">');
+      console.log('Success: HTML includes the favicon.');
+    } catch (error) {
+      console.error('Expected favicon link: <link rel="icon" href="logo.ico" type="image/x-icon">');
+      console.error(`Actual HTML content: ${distHtml}`);
+      error.message = 'Failed: HTML does not include the favicon link.';
+      throw error;
+    }
+});
+
 });
