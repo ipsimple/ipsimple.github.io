@@ -43,49 +43,53 @@ jobs:
       - name: Tag the release
         if: github.ref == 'refs/heads/dev'
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+            git config --global user.name "github-actions[bot]"
   
-          # Fetch tags from the remote repository
-          git fetch --tags
+            # Fetch tags from the remote repository
+            git fetch --tags || { echo "Failed to fetch tags"; exit 1; }
   
-          # Get the latest tag
-          LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1` 2>/dev/null)
+            # Get the latest tag
+            LATEST_TAG=$(git describe --tags `git rev-list --tags --max-count=1` 2>/dev/null || echo "")
   
-          # If no tags are found, start from 1.0.0
-          if [ -z "$LATEST_TAG" ]; then
-            NEW_TAG="1.0.0"
-          else
-            # Parse the latest version
-            VERSION_REGEX="^([0-9]+)\.([0-9]+)\.([0-9]+)$"
-            if [[ $LATEST_TAG =~ $VERSION_REGEX ]]; then
-              MAJOR="${BASH_REMATCH[1]}"
-              MINOR="${BASH_REMATCH[2]}"
-              PATCH="${BASH_REMATCH[3]}"
-  
-              # Increment the minor version
-              MINOR=$((MINOR + 1))
-  
-              # Reset minor and increment major if minor reaches 100
-              if [ $MINOR -eq 100 ]; then
-                MINOR=0
-                MAJOR=$((MAJOR + 1))
-              fi
-  
-              # Form the new version tag
-              NEW_TAG="$MAJOR.$MINOR.$PATCH"
+            # If no tags are found, start from 1.0.0
+            if [ -z "$LATEST_TAG" ]; then
+              echo "No tags found. Starting from 1.0.0"
+              NEW_TAG="1.0.0"
             else
-              echo "Latest tag is not in the expected format: $LATEST_TAG"
-              exit 1
+              echo "Latest tag found: $LATEST_TAG"
+              # Parse the latest version
+              VERSION_REGEX="^([0-9]+)\.([0-9]+)\.([0-9]+)$"
+              if [[ $LATEST_TAG =~ $VERSION_REGEX ]]; then
+                MAJOR="${BASH_REMATCH[1]}"
+                MINOR="${BASH_REMATCH[2]}"
+                PATCH="${BASH_REMATCH[3]}"
+  
+                # Increment the minor version
+                MINOR=$((MINOR + 1))
+  
+                # Reset minor and increment major if minor reaches 100
+                if [ $MINOR -eq 100 ]; then
+                  MINOR=0
+                  MAJOR=$((MAJOR + 1))
+                fi
+  
+                # Form the new version tag
+                NEW_TAG="$MAJOR.$MINOR.$PATCH"
+              else
+                echo "Latest tag is not in the expected format: $LATEST_TAG"
+                exit 1
+              fi
             fi
-          fi
   
-          # Create and push the new tag
-          git tag $NEW_TAG
-          git push origin $NEW_TAG
+            echo "Creating new tag: $NEW_TAG"
+            # Create and push the new tag
+            git tag $NEW_TAG || { echo "Failed to create tag $NEW_TAG"; exit 1; }
+            git push origin $NEW_TAG || { echo "Failed to push tag $NEW_TAG"; exit 1; }
   
-          # Set the new tag as an environment variable
-          echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV  
+            # Set the new tag as an environment variable
+            echo "NEW_TAG=$NEW_TAG" >> $GITHUB_ENV
+  
 
       - name: Comment on the commit
         uses: actions/github-script@v3
